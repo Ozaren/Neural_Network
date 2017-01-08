@@ -2,6 +2,8 @@ package neuron;
 
 import java.util.Collection;
 
+import neuron.Neuron.Synapse;
+
 public class NeuronHidden extends Neuron {
     public NeuronHidden() {
         super();
@@ -33,6 +35,9 @@ public class NeuronHidden extends Neuron {
         for(Neuron n: out)
             conn.append(",[").append(n.id).append(", ").append(getNode().getConnection(n).weight).append("]");
         
-        return String.format("HIDDEN %d = %.3f -> {%s}" , id , getThreshold() , conn.substring(1));
+        if(conn.length() == 0)
+            return String.format("HIDDEN %d = %.3f" , id , getThreshold());
+        else
+            return String.format("HIDDEN %d = %.3f -> {%s}" , id , getThreshold() , conn.substring(1));
     }
 }

@@ -107,13 +107,6 @@ public abstract class Neuron implements Nodable<Neuron.NeuronNode> {
         return node.getConnection(n).weight;
     }
     
-    public void connect(Neuron... ns) {
-        for(Neuron n: ns) {
-            inputs.add(n);
-            n.outputs.add(this);
-        }
-    }
-    
     public void connect(Neuron n , double weight) {
         node.addConnection(n).weight = weight;
         n.inputs.add(this);

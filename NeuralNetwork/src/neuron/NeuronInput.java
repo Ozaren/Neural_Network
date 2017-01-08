@@ -53,6 +53,9 @@ public class NeuronInput extends Neuron {
         for(Neuron n: out)
             conn.append(",[").append(n.id).append(", ").append(getNode().getConnection(n).weight).append("]");
         
-        return String.format("INPUT  %d -> {%s}" , id , conn.substring(1));
+        if(conn.length() == 0)
+            return String.format("INPUT  %d" , id);
+        else
+            return String.format("INPUT  %d -> {%s}" , id , conn.substring(1));
     }
 }
