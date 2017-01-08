@@ -62,7 +62,7 @@ public class NeuralNet {
             NeuronHidden[] hiddens = lHide[0].getNeurons();
             NeuronHidden hidden = hiddens[(int) (Math.random() * hiddens.length)];
             
-            hidden.connect(input , 0);
+            input.connect(hidden , 0);
         }
         else if(layer == lHide.length) {
             NeuronHidden[] hiddens = lHide[lHide.length - 1].getNeurons();
@@ -70,7 +70,7 @@ public class NeuralNet {
             NeuronOutput[] outputs = lOut.getNeurons();
             NeuronOutput output = outputs[(int) (Math.random() * outputs.length)];
             
-            output.connect(hidden , 0);
+            hidden.connect(output , 0);
         }
         else {
             NeuronHidden[] hiddens1 = lHide[layer - 1].getNeurons();
@@ -78,7 +78,7 @@ public class NeuralNet {
             NeuronHidden[] hiddens2 = lHide[layer].getNeurons();
             NeuronHidden output = hiddens2[(int) (Math.random() * hiddens2.length)];
             
-            output.connect(input , 0);
+            input.connect(output , 0);
         }
     }
     
