@@ -2,8 +2,6 @@ package neuron;
 
 import java.util.Collection;
 
-import neuron.Neuron.Synapse;
-
 public class NeuronHidden extends Neuron {
     public NeuronHidden() {
         super();

@@ -1,7 +1,6 @@
 package neuron;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 import net.connection.AbstractConnection;
 import net.node.AbstractNode;
