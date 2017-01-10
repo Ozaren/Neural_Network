@@ -11,12 +11,17 @@ public class NeuronInput extends Neuron {
     }
     
     @Override
-    public void connect(Neuron n , double weight) {
+    public double getThreshold() {
+        return 0;
+    }
+    
+    @Override
+    public boolean connect(Neuron n , double weight) {
         throw new UnsupportedOperationException();
     }
     
-    public void connect(Neuron n) {
-        super.connect(n , weight);
+    public boolean connect(Neuron n) {
+        return super.connect(n , weight);
     }
     
     @Override
@@ -28,8 +33,9 @@ public class NeuronInput extends Neuron {
         return weight;
     }
     
-    public void setWeight(double weight) {
-        this.weight = weight;
+    public void fire(boolean on) {
+        this.weight = on ? 1 : 0;
+        fire();
     }
     
     @Override
@@ -42,6 +48,11 @@ public class NeuronInput extends Neuron {
             n.addWeightToTotal(getWeight());
             n.fire();
         }
+    }
+
+    @Override
+    protected String getType() {
+        return "INPUT";
     }
     
     @Override

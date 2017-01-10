@@ -11,6 +11,11 @@ public class NeuronOutput extends Neuron {
     }
     
     @Override
+    protected String getType() {
+        return "OUTPUT";
+    }
+    
+    @Override
     public String toString() {
         return String.format("OUTPUT %d = %.3f" , id , getThreshold());
     }

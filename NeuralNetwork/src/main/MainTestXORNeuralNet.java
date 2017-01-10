@@ -1,9 +1,9 @@
 package main;
 
-import neuralNet.LayerHidden;
-import neuralNet.LayerInput;
-import neuralNet.LayerOutput;
-import neuralNet.NeuralNet;
+import neuralNetObject.LayerHidden;
+import neuralNetObject.LayerInput;
+import neuralNetObject.LayerOutput;
+import neuralNetObject.NeuralNet;
 import neuron.NeuronHidden;
 import neuron.NeuronInput;
 import neuron.NeuronOutput;

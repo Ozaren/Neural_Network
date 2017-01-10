@@ -25,6 +25,11 @@ public class NeuronHidden extends Neuron {
     }
     
     @Override
+    protected String getType() {
+        return "HIDDEN";
+    }
+    
+    @Override
     public String toString() {
         Collection<Neuron> out = getOutputs();
         

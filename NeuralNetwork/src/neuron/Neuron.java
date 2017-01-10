@@ -9,7 +9,7 @@ import net.node.Nodable;
 public abstract class Neuron implements Nodable<Neuron.NeuronNode> {
     private static int nextid = 0;
     
-    class NeuronNode extends AbstractNode<Synapse , NeuronNode> {
+    public class NeuronNode extends AbstractNode<Synapse , NeuronNode> {
         public NeuronNode(NeuronNode... connections) {
             super(connections);
         }
@@ -23,15 +23,46 @@ public abstract class Neuron implements Nodable<Neuron.NeuronNode> {
         public Synapse createConnection(NeuronNode node) {
             return new Synapse(this , node);
         }
+        
+        public Neuron getNeuron() {
+            return THIS;
+        }
+        
+        @Override
+        public String getName() {
+            return THIS.getType() + " Neuron Node " + THIS.id;
+        }
     }
     
-    class Synapse extends AbstractConnection<NeuronNode> {
+    public class Synapse extends AbstractConnection<NeuronNode> {
         double weight;
         
         public Synapse(NeuronNode nodeLeft , NeuronNode nodeRight) {
             super(nodeLeft , nodeRight);
         }
+        
+        public double getRawWeight() {
+            if(nodeLeft.getNeuron() instanceof NeuronInput)
+                return ((NeuronInput) nodeLeft.getNeuron()).getWeight();
+            else
+                return weight;
+        }
+        
+        public double getWeight() {
+            
+            if(nodeLeft.getNeuron().isFired())
+                return getRawWeight();
+            else
+                return 0;
+        }
+        
+        @Override
+        public String toString() {
+            return String.format("%d <-> %d" , nodeLeft.getNeuron().id , nodeRight.getNeuron().id);
+        }
     }
+    
+    private final Neuron      THIS = this;
     
     public final int          id;
     
@@ -40,6 +71,7 @@ public abstract class Neuron implements Nodable<Neuron.NeuronNode> {
     private ArrayList<Neuron> outputs;
     private double            totalWeight , threshold;
     protected boolean         fired;
+    public boolean            invisible;
     
     public Neuron() {
         this(0);
@@ -64,6 +96,8 @@ public abstract class Neuron implements Nodable<Neuron.NeuronNode> {
             neuron.reset();
     }
     
+    protected abstract String getType();
+    
     public double getThreshold() {
         return threshold;
     }
@@ -72,11 +106,11 @@ public abstract class Neuron implements Nodable<Neuron.NeuronNode> {
         return fired;
     }
     
-    protected ArrayList<Neuron> getInputs() {
+    public ArrayList<Neuron> getInputs() {
         return inputs;
     }
     
-    protected ArrayList<Neuron> getOutputs() {
+    public ArrayList<Neuron> getOutputs() {
         return outputs;
     }
     
@@ -106,10 +140,31 @@ public abstract class Neuron implements Nodable<Neuron.NeuronNode> {
         return node.getConnection(n).weight;
     }
     
-    public void connect(Neuron n , double weight) {
+    public boolean hasInput() {
+        if(this instanceof NeuronInput)
+            return true;
+        for(Neuron neuron: inputs) {
+            if(neuron.hasInput())
+                return true;
+        }
+        return false;
+    }
+    
+    public boolean hasInput(Neuron n) {
+        return inputs.contains(n);
+    }
+    
+    public boolean hasOutput(Neuron n) {
+        return outputs.contains(n);
+    }
+    
+    public boolean connect(Neuron n , double weight) {
+        if(n.inputs.contains(this) || inputs.contains(n))
+            return false;
         node.addConnection(n).weight = weight;
         n.inputs.add(this);
         outputs.add(n);
+        return true;
     }
     
     public boolean canFire() {
